@@ -26,11 +26,11 @@ longitud: -16.3159
 
 ### Zona
 
-La entidad `Zona` representa las diferentes zonas que puede tener un vivero. Por ejemplo, una zona de cultivo o una zona de almacén.
+La entidad `Zona` representa las diferentes zonas que puede tener un vivero. Por ejemplo, una zona de cultivo o una zona de almacén. Se trata de una entidad debil dependiente de Vivero
 
 **Atributos:**
 
-* `num_zona`: número que identifica la zona.
+* `num_zona`: número que identifica la zona, es un atributo discriminante.
 * `nombre`: nombre de la zona.
 * `tipo`: tipo de zona.
 * `latitud`: latitud de la zona.
@@ -203,7 +203,7 @@ También tenemos algunos atributos que pertenecen a las relaciones:
 
 * `cantidad`: número de unidades de un producto almacenadas en una zona.
 * `tarea`: tarea que realiza un empleado.
-* `productividad`: productividad del empleado.
+* `productividad`: productividad de empleado.
 * `fecha_inicio`: fecha en la que empieza una relación.
 * `fecha_fin`: fecha en la que termina una relación.
 
@@ -215,7 +215,7 @@ También tenemos algunos atributos que pertenecen a las relaciones:
 
 Relaciona un `Vivero` con las `Zona` que tiene.
 
-La relación es **1:N**:
+La relación es **N:1**:
 
 * Un vivero puede tener una o varias zonas.
 * Una zona pertenece a un único vivero.
@@ -225,8 +225,10 @@ Por ejemplo, el `Vivero La Laguna` puede tener las zonas 1, 2, 3 y 4, pero la zo
 **Cardinalidad:**
 
 ```text
-Vivero (1,N) ---- Contiene ---- (1,1) Zona
+Vivero (1,1) ---- Contiene ---- (1,N) Zona
 ```
+
+Además, se trata de una dependencia en identificación ya que la entidad debil zona requiere de vivero para identificarse.
 
 ### Almacena
 
@@ -253,8 +255,8 @@ Relaciona a los empleados con las zonas en las que trabajan.
 
 Es una relación **N:M**:
 
-* Un empleado puede trabajar en varias zonas.
-* Una zona puede tener varios empleados.
+* Un empleado puede trabajar en varias zonas a lo largo del tiempo.
+* Una zona puede tener varios empleados o ninguno.
 
 Además, la relación contiene información como la tarea que realiza el empleado, su productividad y las fechas en las que trabaja en esa zona.
 
@@ -266,19 +268,19 @@ Empleado (0,N) ---- Trabaja ---- (1,N) Zona
 
 ### Destinado
 
-Indica en qué zona está destinado un empleado.
+Indica en qué vivero está destinado un empleado.
 
 Es una relación **N:M**:
 
-* Un empleado puede estar destinado a diferentes zonas.
-* Una zona puede tener diferentes empleados destinados.
+* Un empleado puede estar destinado a diferentes vivero a lo largo del tiempo.
+* Un vivero puede tener diferentes empleados destinados o ninguno.
 
 La relación tiene `fecha_inicio` y `fecha_fin` para saber durante qué periodo estuvo destinado el empleado.
 
 **Cardinalidad:**
 
 ```text
-Empleado (0,N) ---- Destinado ---- (1,N) Zona
+Empleado (0,N) ---- Destinado ---- (1,N) Vivero
 ```
 
 ### Ocupa
@@ -288,7 +290,7 @@ Relaciona a los empleados con los puestos que ocupan.
 Es una relación **N:M**:
 
 * Un empleado puede ocupar diferentes puestos a lo largo del tiempo.
-* Un puesto puede ser ocupado por diferentes empleados.
+* Un puesto puede ser ocupado por diferentes empleados o por ninguno.
 
 Las fechas permiten saber durante qué periodo ocupó el empleado ese puesto.
 
@@ -312,7 +314,7 @@ Por ejemplo, podemos tener un registro de productividad diferente para cada día
 **Cardinalidad:**
 
 ```text
-Zona (0,N) ---- Registra ---- (1,1) Registro_productividad
+Zona (1,1) ---- Registra ---- (1,N) Registro_productividad
 ```
 
 ### Realiza
@@ -327,7 +329,7 @@ Es una relación **1:N**:
 **Cardinalidad:**
 
 ```text
-Cliente (0,N) ---- Realiza ---- (1,1) Pedido
+Cliente (1,1) ---- Realiza ---- (0,N) Pedido
 ```
 
 Por ejemplo, un cliente puede registrarse en el sistema y todavía no haber realizado ningún pedido.
@@ -336,15 +338,15 @@ Por ejemplo, un cliente puede registrarse en el sistema y todavía no haber real
 
 Relaciona a los empleados con los pedidos que gestionan.
 
-Es una relación **1:N**:
+Es una relación **N:1**:
 
-* Un empleado puede gestionar varios pedidos.
+* Un empleado puede gestionar varios pedidos o ninguno.
 * Cada pedido es gestionado por un único empleado.
 
 **Cardinalidad:**
 
 ```text
-Empleado (0,N) ---- Gestiona ---- (1,1) Pedido
+Empleado (1,1) ---- Gestiona ---- (0,N) Pedido
 ```
 
 ---
@@ -363,7 +365,6 @@ Además de las cardinalidades que aparecen en el modelo, hemos considerado algun
 * No debería haber dos registros de productividad para la misma zona y la misma fecha.
 * Todo pedido tiene que estar asociado a un cliente.
 * Todo pedido tiene que estar gestionado por un empleado.
-* Toda zona tiene que pertenecer a un vivero.
 * El teléfono de un cliente debe tener un formato válido.
 * No debería haber periodos de trabajo o destino que se solapen de forma incompatible para un mismo empleado.
 
