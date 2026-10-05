@@ -361,7 +361,7 @@ Además de las cardinalidades que aparecen en el modelo, hemos considerado algun
 * La `cantidad` de productos almacenados debe ser positiva.
 * Si una relación tiene `fecha_inicio` y `fecha_fin`, la fecha de fin no puede ser anterior a la fecha de inicio.
 * No debería haber dos registros de productividad para la misma zona y la misma fecha.
-* Un empleado no puede estar destinado a dos viveros simultáneamente durante el mismo periodo.
-* Un empleado solo puede trabajar en una zona perteneciente al vivero al que está destinado durante ese periodo.
+* Un `empleado` no puede estar destinado a dos viveros simultáneamente durante el mismo periodo.
+* Un `empleado` solo puede trabajar en una zona perteneciente al vivero al que está destinado durante ese periodo.
 
 Estas restricciones sirven para evitar datos que no tendrían sentido dentro del sistema y para mantener la información coherente.
