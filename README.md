@@ -26,7 +26,7 @@ longitud: -16.3159
 
 ### Zona
 
-La entidad `Zona` representa las diferentes zonas que puede tener un vivero. Por ejemplo, una zona de cultivo o una zona de almacén. Se trata de una entidad debil dependiente de Vivero
+La entidad `Zona` representa las diferentes zonas que puede tener un vivero. Por ejemplo, una zona de cultivo o una zona de almacén. Se trata de una entidad débil dependiente de `Vivero`.
 
 **Atributos:**
 
@@ -134,7 +134,7 @@ teléfono: 600123456
 
 ### Cliente_plus
 
-`Cliente_plus` representa la información adicional de los clientes que pertenecen a esta modalidad.
+`Cliente_plus` representa a los clientes que pertenecen al programa de fidelización Tajinaste Plus. Se trata de una especialización exclusiva y parcial de la entidad `Cliente`. 
 
 **Atributos:**
 
@@ -228,7 +228,7 @@ Por ejemplo, el `Vivero La Laguna` puede tener las zonas 1, 2, 3 y 4, pero la zo
 Vivero (1,1) ---- Contiene ---- (1,N) Zona
 ```
 
-Además, se trata de una dependencia en identificación ya que la entidad debil zona requiere de vivero para identificarse.
+Además, se trata de una dependencia en identificación ya que la entidad debil `Zona` requiere de `Vivero` para identificarse.
 
 ### Almacena
 
@@ -338,7 +338,7 @@ Por ejemplo, un cliente puede registrarse en el sistema y todavía no haber real
 
 Relaciona a los empleados con los pedidos que gestionan.
 
-Es una relación **N:1**:
+Es una relación **1:N**:
 
 * Un empleado puede gestionar varios pedidos o ninguno.
 * Cada pedido es gestionado por un único empleado.
@@ -355,17 +355,13 @@ Empleado (1,1) ---- Gestiona ---- (0,N) Pedido
 
 Además de las cardinalidades que aparecen en el modelo, hemos considerado algunas restricciones para que los datos tengan sentido:
 
-* Los identificadores de las entidades deben ser únicos.
-* Los identificadores deben ser valores enteros positivos.
+
 * El `precio` de un producto no puede ser negativo.
 * El `importe` de un pedido tampoco puede ser negativo.
 * La `cantidad` de productos almacenados debe ser positiva.
 * Si una relación tiene `fecha_inicio` y `fecha_fin`, la fecha de fin no puede ser anterior a la fecha de inicio.
-* La latitud y longitud deben corresponder a coordenadas válidas.
 * No debería haber dos registros de productividad para la misma zona y la misma fecha.
-* Todo pedido tiene que estar asociado a un cliente.
-* Todo pedido tiene que estar gestionado por un empleado.
-* El teléfono de un cliente debe tener un formato válido.
-* No debería haber periodos de trabajo o destino que se solapen de forma incompatible para un mismo empleado.
+* Un empleado no puede estar destinado a dos viveros simultáneamente durante el mismo periodo.
+* Un empleado solo puede trabajar en una zona perteneciente al vivero al que está destinado durante ese periodo.
 
 Estas restricciones sirven para evitar datos que no tendrían sentido dentro del sistema y para mantener la información coherente.
